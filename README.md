@@ -1,16 +1,35 @@
-# so_mobile_app
+# 📱so_mobile_app
 
-A new Flutter project.
+## 👀 Requirements
 
-## Getting Started
+- [Flutter v3.19.5](https://flutter.dev/docs)
+- [Dart v3.3.3](https://dart.dev/guides)
+- [Node.js v22.3.0](https://nodejs.org/en/blog/release/v22.3.0)
 
-This project is a starting point for a Flutter application.
+## 🚀 Getting Started
 
-A few resources to get you started if this is your first Flutter project:
+### Local development setup
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone the repository:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+$ git clone https://github.com/gian10carlos/so-mobile-app
+```
+
+2. Navigate into the project directory:
+
+```bash
+$ cd so_mobile_app
+```
+
+3. Install the dependencies:
+
+```bash
+$ flutter pub get
+```
+
+4. Run the application:
+
+```bash
+$ flutter run
+```
