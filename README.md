@@ -1,5 +1,9 @@
 # 📱so_mobile_app
 
+Mobile application designed to streamline financial transactions, offering users secure, 
+efficient, and swift money transfers while ensuring seamless communication with banking 
+institutions and relevant authorities.
+
 ## 👀 Requirements
 
 - [Flutter v3.19.5](https://flutter.dev/docs)

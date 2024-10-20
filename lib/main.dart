@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:so_mobile_app/presentation/screens/home/home_screen.dart';
 
-class Main extends StatelessWidget {
-  const Main({super.key});
+import 'presentation/routes/__routes__.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const MaterialApp(
+      title: 'SO_Mobile',
+      onGenerateRoute: AppRoutes.generateRoute,
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
   }
 }
