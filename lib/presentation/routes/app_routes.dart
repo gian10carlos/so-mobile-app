@@ -4,6 +4,7 @@ import '__routes__.dart';
 
 final Map<String, WidgetBuilder> _routeMap = {
   ...HomeRouteMap,
+  ...TransferRouteMap,
   ...signInRouteMap,
   ...signUpRouteMap,
 };
