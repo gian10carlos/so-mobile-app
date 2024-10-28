@@ -21,24 +21,28 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
   final TextEditingController ccvController = TextEditingController();
   final TextEditingController codeKeyController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmController =
+      TextEditingController();
 
-  void _handleSignin() async {
+  void _handleSignup() async {
     try {
-      final response = await dio.post('/auth/register', data: {
-        "dni": dniController.text,
-        "code_identity": codeIdentityController.text,
-        "card_number": cardNumberController.text,
-        "ccv": ccvController.text,
-        "code_key": codeKeyController.text,
-        "password": passwordController.text,
-        "status": true,
-      });
-
-      if (response.statusCode == 201) {
-        _setTokenSession(response.data["token"]);
+      if (passwordController.text != passwordConfirmController.text) {
+        _showErrorSnackBar("Las contraseñas tienen que ser iguales.");
       } else {
-        _showErrorSnackBar(
-            "Inicio de sesión fallido. Verifica tus credenciales.");
+        final response = await dio.post('/auth/register', data: {
+          "dni": dniController.text,
+          "code_identity": codeIdentityController.text,
+          "card_number": cardNumberController.text,
+          "ccv": ccvController.text,
+          "code_key": codeKeyController.text,
+          "password": passwordController.text
+        });
+
+        if (response.statusCode == 201) {
+          _setTokenSession(response.data["token"]);
+        } else {
+          _showErrorSnackBar("Crear usuario fallido. Verifica tus datos.");
+        }
       }
     } catch (e) {
       _showErrorSnackBar("Error: ${e.toString()}");
@@ -82,7 +86,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
           color: Colors.black,
           obscureText: false,
           keyboardType: TextInputType.number,
-          controller: dniController,
+          controller: codeIdentityController,
         ),
         const SizedBox(height: 15),
         CustomInputTextWidget(
@@ -90,7 +94,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
           color: Colors.black,
           obscureText: false,
           keyboardType: TextInputType.number,
-          controller: dniController,
+          controller: cardNumberController,
         ),
         const SizedBox(height: 15),
         CustomInputTextWidget(
@@ -98,7 +102,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
           color: Colors.black,
           obscureText: false,
           keyboardType: TextInputType.number,
-          controller: dniController,
+          controller: ccvController,
         ),
         const SizedBox(height: 15),
         CustomInputTextWidget(
@@ -106,7 +110,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
           color: Colors.black,
           obscureText: false,
           keyboardType: TextInputType.number,
-          controller: dniController,
+          controller: codeKeyController,
         ),
         const SizedBox(height: 15),
         CustomInputPasswordWidget(
@@ -118,7 +122,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
         CustomInputPasswordWidget(
           color: Colors.black,
           hintText: "Confirmar contraseña",
-          controller: passwordController,
+          controller: passwordConfirmController,
         ),
         const SizedBox(height: 20),
         CustomButtonWidget(
@@ -126,7 +130,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
             foregroundColor: Colors.white,
             buttonText: "REGISTRAR",
             onPressed: () {
-              _handleSignin();
+              _handleSignup();
             }),
         const SizedBox(height: 20),
         Row(
