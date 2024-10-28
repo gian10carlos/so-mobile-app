@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:so_mobile_app/presentation/widgets/transaction_item_widget.dart';
 
 import '../../widgets/__widgets__.dart';
 
@@ -18,7 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(name: "Gian Carlos"),
+      appBar: const CustomAppBarWidget(name: "Gian Carlos"),
+      drawer: const CustomDrawerWidget(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
