@@ -8,7 +8,7 @@ class TransferScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(name: "Gian Carlos"),
+      appBar: const CustomAppBarWidget(name: "Gian Carlos"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
