@@ -61,9 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottombarWidget(
+      bottomNavigationBar: const CustomBottombarWidget(
         currentIndex: 0,
-        onTap: _onTabTapped,
       ),
     );
   }
