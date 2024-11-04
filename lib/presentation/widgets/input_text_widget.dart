@@ -10,17 +10,20 @@ class CustomInputTextWidget extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final int? maxLength;
+  final String? Function(String)? onChange;
 
-  const CustomInputTextWidget(
-      {super.key,
-      required this.hintText,
-      required this.color,
-      this.suffixIcon,
-      required this.obscureText,
-      required this.keyboardType,
-      this.controller,
-      this.validator,
-      this.maxLength});
+  const CustomInputTextWidget({
+    super.key,
+    required this.hintText,
+    required this.color,
+    this.suffixIcon,
+    required this.obscureText,
+    required this.keyboardType,
+    this.controller,
+    this.validator,
+    this.maxLength,
+    this.onChange,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,7 @@ class CustomInputTextWidget extends StatelessWidget {
       decoration: inputDecoration,
       style: TextStyle(color: color),
       cursorColor: color,
+      onChanged: onChange,
     );
   }
 }
