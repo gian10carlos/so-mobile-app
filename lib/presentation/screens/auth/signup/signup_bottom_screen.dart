@@ -30,7 +30,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
         _showErrorSnackBar("Las contraseñas tienen que ser iguales.");
       } else {
         DateTime now = DateTime.now().toUtc();
-        String formattedDatetime = now.toIso8601String().split('.')[0] + 'Z';
+        String formattedDatetime = '${now.toIso8601String().split('.')[0]}Z';
         final response = await dio.post('/auth/register', data: {
           "dni": dniController.text,
           "code_identity": codeIdentityController.text,
@@ -39,8 +39,7 @@ class _SignupBottomScreenState extends State<SignupBottomScreen> {
           "code_key": codeKeyController.text,
           "password": passwordController.text,
           "ip_log": "173.145.56.34",
-          "dateInp": formattedDatetime,
-          "amount": 0
+          "dateInp": formattedDatetime
         });
 
         if (response.statusCode == 201) {
