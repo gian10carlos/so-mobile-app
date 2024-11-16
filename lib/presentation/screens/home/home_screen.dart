@@ -1,4 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:so_mobile_app/config/constants/environment.dart';
 
 import '../../widgets/__widgets__.dart';
 
@@ -10,14 +14,51 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void _onTabTapped(int index) {
-    setState(() {});
+  final dio = Dio(BaseOptions(baseUrl: Environment.apiUrl));
+
+  int? userId;
+  String? userDni;
+  List<dynamic> transfers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getIdSendByToken();
+  }
+
+  Future<void> _getIdSendByToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token != null) {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+      setState(() {
+        userId = int.parse(decodedToken['id']);
+        userDni = decodedToken['dni'];
+      });
+    }
+
+    await _getTransfers();
+  }
+
+  Future<void> _getTransfers() async {
+    try {
+      final response = await dio.get('/transfer/$userId');
+
+      if (response.statusCode == 200) {
+        setState(() {
+          transfers = response.data['transfers'];
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBarWidget(name: "Gian Carlos"),
+      appBar: CustomAppBarWidget(name: '$userDni'),
       drawer: const CustomDrawerWidget(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,21 +90,37 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: ListView(
-                children: const [
-                  CustomTransactionItemWidget(
-                      name: 'Alan Brito', time: '10:30pm', amount: 'S/. 30,40'),
-                  CustomTransactionItemWidget(
-                      name: 'Mario Neta', time: '10:30pm', amount: 'S/. 1,00'),
-                ],
-              ),
-            ),
+              child: transfers.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: transfers.length,
+                      itemBuilder: (context, index) {
+                        final transfer = transfers[index];
+                        final bool isSender = transfer['id_send'] == userId;
+
+                        return ListTile(
+                          title: Text(
+                            transfer['id_received'] == userId
+                                ? 'De: Usuario ${transfer['id_send']}'
+                                : 'Para: Usuario ${transfer['id_received']}',
+                          ),
+                          subtitle: Text(transfer['date']),
+                          trailing: Text(
+                            'S/. ${transfer['amount'].toStringAsFixed(2)}',
+                            style: TextStyle(
+                              color: isSender ? Colors.red : Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+            )
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottombarWidget(
+      bottomNavigationBar: const CustomBottombarWidget(
         currentIndex: 0,
-        onTap: _onTabTapped,
       ),
     );
   }
